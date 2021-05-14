@@ -1,0 +1,162 @@
+---
+title: "PRUEBA DE DIAGNÓSTICO"
+author: "Luis Chávez"
+date: "13/5/2021"
+output: html_document
+---
+
+PRUEBA DE DIAGNÓSTICO
+
+1. La siguiente rutina genera dos vectores con las edades (en años) y 
+las alturas (en cm) de 20 personas. No olvide ejecutar la semilla para
+obtener todos los mismos valores
+
+```{r}
+
+set.seed(1809)
+age <- rpois(20, 40)
+age
+hei <- round(rnorm(20, 175, 10), 2)
+hei
+
+```
+
+1.1 ¿Cuál es la altura de la persona más alta?
+
+```{r}
+max(hei)
+```
+
+
+1.2 ¿Cuál es la persona con la estatura más baja y qué edad tiene?
+
+```{r}
+
+mini<-hei[1]
+for(i in 1:length(hei)){
+  if(hei[i]<mini){
+    
+    mini<-hei[i]
+    age_heimini<-age[i]
+  }
+
+}
+
+result<-c(mini,age_heimini)
+result
+
+```
+
+
+
+1.3. ¿Cuántas personas tienen una edad entre 30 y 40 años, ambos incluidos?
+
+```{r}
+cont<-0
+for(i in 1:length(age)){
+if(age[i] >=30 && age[i] <=40){
+cont<-cont+1
+}
+}
+
+cont
+
+```
+
+
+
+1.4. Use la función sample para crear un vector llamado uni con las carreras universitarias de estas personas: Estadística, Física, Biología y Medicina.
+Use la semilla "28042020"
+
+```{r}
+set.seed(28042020)
+uni<-sample(c("Estadística","Física", "Biología" , "Medicina"),size=20,replace = TRUE)
+uni
+```
+
+
+1.5 ¿Cuál es la mediana de edad de aquellas personas que estudian Física o Medicina?
+
+```{r}
+newage<-c()
+for(i in 1:length(age)){
+if (uni[i]=="Física" | uni[i]=="Medicina"){
+  newage[i]<-age[i]
+}
+  else{
+    
+    newage[i]<-NA
+  }
+
+}
+
+median(newage,na.rm=TRUE)
+
+```
+
+1.6. Sobreescriba los valores de "Estadística" y "Física" por "Stats" y 
+"Phys" respectivamente
+
+```{r}
+for(i in 1:length(uni)){
+if (uni[i]=="Estadística") {
+  uni[i]="Stats"
+}
+if (uni[i]=="Física") {
+  uni[i]="Phys"
+}
+ 
+}
+uni
+
+```
+
+1.7. Cree un data frame que contenga las tres variables -age, hei, uni- 
+y guárdela como una base de datos .Rdata
+
+```{r}
+df<-data.frame(age,hei,uni)
+df
+save(df, file="BD.RData")
+
+
+```
+
+
+
+1.8. Cree una función que calcule en un solo vector la media y la varianza de un conjunto de datos
+
+```{r}
+
+VECT<-function(x){
+  a<-mean(x)
+  b<-var(x)
+  v<-c(a,b)
+  return(v)
+}
+
+```
+
+
+
+1.9. Calcule la mediana de la edad diferenciándola por la profesión (Una mediana de la edad por cada profesión)
+
+
+```{r}
+funi = as.factor(uni)
+tapply(age,funi,median)
+
+```
+
+
+
+1.10. Calcule con la función creada en 1.8, la media y la varianza de la edad diferenciando la profesión 
+
+```{r}
+
+tapply(age,funi,VECT)
+
+```
+
+
+
